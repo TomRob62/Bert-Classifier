@@ -6,6 +6,7 @@
 from transformers import BertTokenizer, TFBertForSequenceClassification
 import tensorflow_datasets as tfds
 import tensorflow as tf
+import matplotlib.pyplot as plt
 
 class MyBert:
     def __init__(self, ds_train, ds_test, lr=2e-5):
@@ -104,4 +105,30 @@ class MyBert:
             'attention_mask': attention_mask_list
         }, label_list)).map(lambda x, y: self.map_example_to_dict(x['input_ids'], x['attention_mask'], x['token_type_ids'], y))
     # end encode_examples()
+
+    def plot_accuracy(self, history):
+        """
+        Plots the accuracy metric from the training history of a TensorFlow model.
+        
+        Parameters:
+        history (tf.keras.callbacks.History): The history object returned from model.fit()
+        """
+        # Extract accuracy values
+        accuracy = history.history['accuracy']
+        val_accuracy = history.history['val_accuracy']
+
+        # Get the number of epochs
+        epochs = range(1, len(accuracy) + 1)
+
+        # Plot training and validation accuracy per epoch
+        plt.figure(figsize=(8, 6))
+        plt.plot(epochs, accuracy, 'bo-', label='Training Accuracy')
+        plt.plot(epochs, val_accuracy, 'ro-', label='Validation Accuracy')
+        plt.title('Training and Validation Accuracy')
+        plt.xlabel('Epochs')
+        plt.ylabel('Accuracy')
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+    # end plot_accuracy
 # end class MyBert
