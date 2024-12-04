@@ -41,5 +41,5 @@ if __name__ == '__main__':
     history = bert.train(train_ds, test_ds, epoch=1)
     # Assuming you have a History object called `bert_history`
     bert.plot_accuracy(history)
-
+# end __main__
     
